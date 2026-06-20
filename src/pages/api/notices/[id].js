@@ -46,6 +46,26 @@ export default async function handler(req, res) {
     }
   }
 
+  // DELETE NOTICE
+  if (req.method === "DELETE") {
+    try {
+      await prisma.notice.delete({
+        where: {
+          id: id,
+        },
+      });
+
+      return res.status(200).json({
+        message: "Notice deleted successfully",
+      });
+
+    } catch (error) {
+      return res.status(500).json({
+        message: "Error deleting notice",
+      });
+    }
+  }
+
   return res.status(405).json({
     message: "Method not allowed",
   });

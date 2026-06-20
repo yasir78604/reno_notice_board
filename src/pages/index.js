@@ -2,9 +2,30 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import NoticeCard from "../components/NoticeCard";
+import DeleteModal from "../components/DeleteModal";
 
 export default function Home() {
   const [notices, setNotices] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`/api/notices/${selectedId}`);
+
+      setShowModal(false);
+
+      fetchNotices();
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const openDeleteModal = (id) => {
+    setSelectedId(id);
+    setShowModal(true);
+  };
 
   const fetchNotices = async () => {
     try {
@@ -20,7 +41,7 @@ export default function Home() {
   }, []);
 
   return (
-    
+
     <div className="min-h-screen bg-[#0f0f0f] px-6 py-12 md:px-16">
 
       {/* Header row */}
@@ -51,9 +72,17 @@ export default function Home() {
           <NoticeCard
             key={notice.id}
             notice={notice}
+            onDelete={openDeleteModal}
           />
         ))}
       </div>
+
+      {showModal && (
+        <DeleteModal
+          onConfirm={handleDelete}
+          onCancel={() => setShowModal(false)}
+        />
+      )}
 
     </div>
   );

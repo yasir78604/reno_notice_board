@@ -1,6 +1,9 @@
 import Link from "next/link";
 
-export default function NoticeCard({ notice }) {
+export default function NoticeCard({
+  notice,
+  onDelete,
+}) {
   return (
     // <div className="border rounded-xl p-5 shadow-lg hover:shadow-xl transition">
 
@@ -94,7 +97,9 @@ export default function NoticeCard({ notice }) {
               Edit
             </button>
           </Link>
-          <button className="text-xs font-medium text-red-400 hover:text-white hover:bg-red-500 px-3 py-1.5 rounded-lg border border-red-500/20 hover:border-red-500 transition-all duration-200">
+          <button
+            onClick={() => onDelete(notice.id)}
+            className="text-xs font-medium text-red-400 hover:text-white hover:bg-red-500 px-3 py-1.5 rounded-lg border border-red-500/20 hover:border-red-500 transition-all duration-200">
             Delete
           </button>
         </div>
